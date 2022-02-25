@@ -1,2 +1,2 @@
 # Wordle Solver
-Project for iNTUition v8.0
+Project for iNTUition v8.0 (2022)
