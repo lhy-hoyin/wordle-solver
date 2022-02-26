@@ -1,9 +1,6 @@
-
 from scipy.stats import entropy
 import collections
 import operator
-
-from sympy import take
 
 def getMaskForWord(guessedWord, index):
     mask = ""
@@ -90,8 +87,8 @@ currentDict = words
 print(words)
 iterate = 0;
 while (iterate <= 4): 
-    word = input("please input a word: ")
-    num = input("please input the order, 0 for black, 1 for green, 2 for orange : ")
+    word = input("please input a word: ").strip()
+    num = input("please input the order, 0 for black, 1 for green, 2 for orange : ").strip()
     currentDict = narrowWords(word, num, currentDict)
     if iterate >= 1:
         for (key, value) in currentDict.items():
