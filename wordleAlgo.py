@@ -40,7 +40,6 @@ def getLettersNotInAnswer(guessedWord, index):
         if inAnswer.__contains__(letter):
             notInAnswer = notInAnswer.replace(letter, "")
 
-    print(notInAnswer)
     return notInAnswer
 
 def containsLettersAndPosition(guessedWord, index, d):
@@ -132,7 +131,7 @@ class wordle_algo:
                 for (key, value) in self.current_dict.items():
                     self.current_dict[key] = getEntropy(key, self.current_dict, self.permute)
                 self.current_dict = collections.OrderedDict(sorted(self.current_dict.items(), key=operator.itemgetter(1), reverse=True))
-            print(self.current_dict)
+            print(self.current_dict.keys())
             iterate += 1
 
 
