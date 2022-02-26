@@ -17,7 +17,7 @@ def result_format_cmd(update, context):
     update.message.reply_text(user_bot[str(update.effective_chat.id)].result_format_message_str())
     
 def restart_cmd(update, context):
-    update.message.reply_text(user_bot[str(update.effective_chat.id)].restart())
+    user_bot[str(update.effective_chat.id)].restart()
 
 def handle_msg(update, context):
     response = user_bot[str(update.effective_chat.id)].respond(update.message.text)

@@ -43,7 +43,7 @@ class bot_logic:
                 return "wrong digit(s)"
             '''
             if input_text == "11111":
-                return "Yay!!! You got the correct answer already!\n(Hint: type /restart to try the next one)"
+                return "Yay!!! You got the correct answer already!\n(Hint: type /start to try the next one)"
             
             self.entered_result = input_text
             return self.run_solver()
@@ -65,7 +65,7 @@ class bot_logic:
         reply += "You can also try:"
         
         for word_pair in suggestions:
-            if word_pair !=  suggestions[0]:
+            if word_pair != suggestions[0]:
                 reply += "\n" + word_pair[0]
         
         #TODO: can also display numbers to users (to make a better choice)
