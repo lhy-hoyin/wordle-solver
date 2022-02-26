@@ -1,6 +1,8 @@
 from scipy.stats import entropy
+from scipy.special import expit
 import collections
 import operator
+import wordfreq
 
 def getMaskForWord(guessedWord, index, n):
     mask = ""
@@ -88,9 +90,8 @@ def getEntropy(word, mainList, listOfPermutes):
     for p in listOfPermutes:
         fList = narrowWords(word, p, mainList)
         arr.append(len(fList) / len(mainList))
-    return entropy(arr, base=2)
-
-
+    return entropy(arr, base=2)    
+    
 class wordle_algo:
     
     words = {}
@@ -106,7 +107,8 @@ class wordle_algo:
         with open('words.txt', "r") as file:
             wordsRead = file.readlines()
             for word in wordsRead:
-                self.words[word.strip()] = 0.00
+                freq = wordfreq.zipf_frequency(word.strip(), 'en', 'large')
+                self.words[word.strip()] = [0.00, freq]
         
         # Start first time
         self.restart()
@@ -117,23 +119,34 @@ class wordle_algo:
             return narrowWords(word, result, self.current_dict)
         return self.current_dict
     
+    def compute_entropy(self):
+        # calculate entropy for each possible word
+        for (key, value) in self.current_dict.items():
+            en = getEntropy(key, self.current_dict, self.permute)
+            self.current_dict[key] = [en, value[1]]
+        
+        # Sort the words by entropy        
+        self.current_dict = collections.OrderedDict(
+                sorted(self.current_dict.items(), 
+                key=lambda item: item[1][0],
+                reverse=True))
+    
     def restart(self):
         self.current_dict = self.words
         return self
         
     def test(self):
         iterate = 0
-        while (iterate <= 4): 
+        while (iterate <= 5): 
             word = input("please input a word: ")
             num = input("please input the order, 0 for black, 1 for green, 2 for orange : ")
             self.current_dict = self.get_possible_words({word:num})
+            # note: we only calc entropy after 1st iteration, 
+            # cos it takes for the first one (too many words)
             if iterate >= 1:
-                for (key, value) in self.current_dict.items():
-                    self.current_dict[key] = getEntropy(key, self.current_dict, self.permute)
-                self.current_dict = collections.OrderedDict(sorted(self.current_dict.items(), key=operator.itemgetter(1), reverse=True))
-            print(self.current_dict.keys())
+                self.compute_entropy() # note: we only calc entropy after 1st iteration, cos it takes for the first one (too many words)
+            
             iterate += 1
-
 
 if __name__ == "__main__":
     wordle_algo().test()
