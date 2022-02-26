@@ -1,6 +1,8 @@
 import sys
 import argparse
 
+from wordleAlgo import wordle_algo
+
 WORDLE_WORD_LENGTH = 5
 
 status = {
@@ -18,6 +20,7 @@ def status_help_message():
 class wordle_solver:
 
     attempts = {}
+    algo = wordle_algo()
 
     def __init__(self):
         parser = argparse.ArgumentParser(
@@ -28,10 +31,7 @@ class wordle_solver:
         parser.add_argument("result",
             help = status_help_message())
             
-        if (len(sys.argv) == 1):
-            parser.print_help()
-        else:
-            self.start_auto()
+        self.start_auto()
     
     def start_auto(self):
         for arg in sys.argv:
@@ -61,9 +61,24 @@ class wordle_solver:
             assert len(v) == WORDLE_WORD_LENGTH
         self.attempts.update(key_value)
     
+    def try_word(self, word_result):
+        self.add_to_dict(word_result)
+        self.algo.current_dict = self.algo.get_possible_words(word_result)
+
+        if len(self.get_attempts()) > 1:
+            self.algo.compute_entropy()
+        
+        return self.algo.current_dict
+    
     def get_attempts(self):
         return self.attempts
         
 if __name__ == "__main__":
     solver = wordle_solver()
+    possible_words = solver.try_word({'magic':'01020'})
+    possible_words = solver.try_word({'nails':'01102'})
+    possible_words = solver.try_word({'raise':'01120'})
+    possible_words = solver.try_word({'waits':'01112'})
+    possible_words = solver.try_word({'baits':'01112'})
     print(solver.get_attempts())
+    print(possible_words)
