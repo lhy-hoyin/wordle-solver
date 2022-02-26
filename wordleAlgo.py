@@ -92,31 +92,49 @@ def getEntropy(word, mainList, listOfPermutes):
     return entropy(arr, base=2)
 
 
-if __name__ == "__main__":
-    # All possible outcomes
-    file = open('permutations.txt', "r")
-    permute = file.readlines()
-    file.close()
+class wordle_algo:
     
-    # Get words in text file
-    file = open('words.txt', "r")
-    wordsRead = file.readlines()
     words = {}
-    for word in wordsRead:
-        words[word.strip()] = 0.00
-    file.close()
+    permute = None
+    current_dict = None
+
+    def __init__(self):
+        # All possible outcomes
+        with open('permutations.txt', "r") as file:
+            self.permute = file.readlines()
+        
+        # Get words in text file
+        with open('words.txt', "r") as file:
+            wordsRead = file.readlines()
+            for word in wordsRead:
+                self.words[word.strip()] = 0.00
+        
+        # Start first time
+        self.restart()
     
-    currentDict = words
+    def get_possible_words(self, word_result):
+        assert len(word_result) == 1
+        for (word, result) in word_result.items():
+            return narrowWords(word, result, self.current_dict)
+        return self.current_dict
+    
+    def restart(self):
+        self.current_dict = self.words
+        return self
+        
+    def test(self):
+        iterate = 0
+        while (iterate <= 4): 
+            word = input("please input a word: ")
+            num = input("please input the order, 0 for black, 1 for green, 2 for orange : ")
+            self.current_dict = self.get_possible_words({word:num})
+            if iterate >= 1:
+                for (key, value) in self.current_dict.items():
+                    self.current_dict[key] = getEntropy(key, self.current_dict, self.permute)
+                self.current_dict = collections.OrderedDict(sorted(self.current_dict.items(), key=operator.itemgetter(1), reverse=True))
+            print(self.current_dict)
+            iterate += 1
 
-    iterate = 0
-    while (iterate <= 5): 
-        word = input("please input a word: ").strip()
-        num = input("please input the order, 0 for black, 1 for green, 2 for orange : ").strip()
-        currentDict = narrowWords(word, num, currentDict)
-        if iterate >= 1:
-            for (key, value) in currentDict.items():
-                currentDict[key] = getEntropy(key, currentDict, permute)
-            currentDict = collections.OrderedDict(sorted(currentDict.items(), key=operator.itemgetter(1), reverse=True))
 
-        print({k: currentDict[k] for k in list(currentDict)[:15]})
-        iterate += 1
+if __name__ == "__main__":
+    wordle_algo().test()
