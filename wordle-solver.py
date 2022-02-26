@@ -9,7 +9,7 @@ status = {
     '2' : "correct letter but wrong position",
 }
 
-def status_help():
+def status_help_message():
     help_message = "Results of the word, using:"
     for i in status:
         help_message = help_message + "\n" + i + " to represent " + status[i]
@@ -20,14 +20,13 @@ class wordle_solver:
     attempts = {}
 
     def __init__(self):
-        parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
-
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.RawTextHelpFormatter,
+            epilog = "Positional arguments can be repeated (following the correct positions)")
         parser.add_argument("word",
-            nargs = '+',
             help = str(WORDLE_WORD_LENGTH) + "-letter word you tried")
         parser.add_argument("result",
-            nargs = '+',
-            help = status_help())
+            help = status_help_message())
             
         if (len(sys.argv) == 1):
             parser.print_help()
