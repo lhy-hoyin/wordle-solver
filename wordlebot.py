@@ -1,9 +1,8 @@
 from telegram.ext import *
 #from telegram import *      #for inlinekeyboard
-import teleKey as key
-import responseTest as R
 
-print("Commence Bot Operations...")
+import responseTest as R
+#import teleKey as key
 
 def start_cmd(update, context):
     update.message.reply_text('Hello, did you need help with Wordle?')
@@ -22,7 +21,11 @@ def error(update, context):
     print(f"Update {update} caused error {context.error}")
 
 def main():
-    updater = Updater(key.API_Key, use_context=True)
+    with open("token.key", 'r') as token:
+        BOT_TOKEN = token.read()
+    
+    updater = Updater(BOT_TOKEN, use_context=True)
+    
     dpc = updater.dispatcher
 
     dpc.add_handler(CommandHandler("start", start_cmd))
@@ -31,8 +34,12 @@ def main():
     dpc.add_handler(MessageHandler(Filters.text, handle_msg))
 
     dpc.add_error_handler(error)
-
+    
     updater.start_polling()
+    print("Commence Bot Operations...")
+    
     updater.idle()
 
-main()
+
+if __name__ == "__main__":
+    main()
