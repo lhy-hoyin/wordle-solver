@@ -33,14 +33,17 @@ class wordle_solver:
         i = 0
         num_of_pairs = (len(sys.argv) - 1) // 2
         while i < num_of_pairs:
-            self.attempts[sys.argv[i*2 + 1]] = sys.argv[i*2 + 2]
+            key = sys.argv[i*2 + 1].upper()
+            value = sys.argv[i*2 + 2]
+            self.attempts[key] = value
             i  = i + 1
     
     def print_help(self):
-        print("Usage:", sys.argv[0], "5-letter-word previous-word-result ...")
-        print("\tTo represent results:")
+        print("Usage:", sys.argv[0], "word result ...")
+        print("Ensure that each word and results is", WORDLE_WORD_LENGTH, "letters")
+        print("To represent results:")
         for i in status:
-            print("\tType", i, "to represent", status[i])
+            print("Type", i, "to represent", status[i])
     
     def get_attempts(self):
         return self.attempts
