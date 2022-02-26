@@ -94,20 +94,29 @@ class wordle_algo:
             return narrowWords(word, result, self.current_dict)
         return self.current_dict
     
+    def compute_entropy(self):
+        # calculate entropy for each possible word
+        for (key, value) in self.current_dict.items():
+            self.current_dict[key] = getEntropy(key, self.current_dict, self.permute)
+        
+        # Sort the words by entropy        
+        self.current_dict = collections.OrderedDict(
+                sorted(self.current_dict.items(), 
+                key=operator.itemgetter(1),
+                reverse=True))
+    
     def restart(self):
         self.current_dict = self.words
         return self
         
     def test(self):
         iterate = 0
-        while (iterate <= 4): 
+        while (iterate <= 5): 
             word = input("please input a word: ")
             num = input("please input the order, 0 for black, 1 for green, 2 for orange : ")
             self.current_dict = self.get_possible_words({word:num})
             if iterate >= 1:
-                for (key, value) in self.current_dict.items():
-                    self.current_dict[key] = getEntropy(key, self.current_dict, self.permute)
-                self.current_dict = collections.OrderedDict(sorted(self.current_dict.items(), key=operator.itemgetter(1), reverse=True))
+                self.compute_entropy()
             print(self.current_dict)
             iterate += 1
 
