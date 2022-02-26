@@ -75,10 +75,8 @@ class wordle_solver:
         
 if __name__ == "__main__":
     solver = wordle_solver()
-    possible_words = solver.try_word({'magic':'01020'})
-    possible_words = solver.try_word({'nails':'01102'})
-    possible_words = solver.try_word({'raise':'01120'})
-    possible_words = solver.try_word({'waits':'01112'})
-    possible_words = solver.try_word({'baits':'01112'})
+    possible_words = solver.try_word({'magic':'02200'})
+    possible_words = solver.try_word({'grape':'11100'})
+    possible_words = solver.try_word({'grass':'11100'})
     print(solver.get_attempts())
     print(possible_words)

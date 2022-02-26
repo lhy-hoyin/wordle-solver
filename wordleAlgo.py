@@ -141,7 +141,7 @@ class wordle_algo:
             # note: we only calc entropy after 1st iteration, 
             # cos it takes for the first one (too many words)
             if iterate >= 1:
-                self.compute_entropy() 
+                self.compute_entropy() # note: we only calc entropy after 1st iteration, cos it takes for the first one (too many words)
             iterate += 1
 
 
