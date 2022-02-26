@@ -48,7 +48,7 @@ class wordle_solver:
         i = 0
         num_of_pairs = (len(sys.argv) - 1) // 2
         while i < num_of_pairs:
-            key = sys.argv[i*2 + 1].upper()
+            key = sys.argv[i*2 + 1].lower()
             value = sys.argv[i*2 + 2]
             self.attempts[key] = value
             i  = i + 1
