@@ -2,11 +2,11 @@ from scipy.stats import entropy
 import collections
 import operator
 
-def getMaskForWord(guessedWord, index):
+def getMaskForWord(guessedWord, index, n):
     mask = ""
     count = 0;
     for num in index:
-        if num == '1':
+        if num == n:
             mask = mask + guessedWord[count]
         else:
             mask = mask + "_"
@@ -23,16 +23,28 @@ def getLetters(guessedWord, index):
     return letters
 
 def getLettersNotInAnswer(guessedWord, index):
-    letters = ""
+    notInAnswer = ""
+    inAnswer = ""
     count = 0;
     for num in index:
         if num == '0':
-            letters = letters + guessedWord[count]
+            if count < len(guessedWord):
+                if inAnswer.__contains__(guessedWord[count]) == False:
+                    notInAnswer = notInAnswer + guessedWord[count]
+        else:
+            if count < len(guessedWord):
+                inAnswer = inAnswer + guessedWord[count]
         count += 1
-    return letters
+    
+    for letter in notInAnswer:
+        if inAnswer.__contains__(letter):
+            notInAnswer = notInAnswer.replace(letter, "")
+
+    print(notInAnswer)
+    return notInAnswer
 
 def containsLettersAndPosition(guessedWord, index, d):
-    mask = getMaskForWord(guessedWord, index)
+    mask = getMaskForWord(guessedWord, index, '1')
     filteredList = {}
 
     for (key, values) in d.items():
@@ -42,10 +54,14 @@ def containsLettersAndPosition(guessedWord, index, d):
 
 def containsLetters(guessedWord, index, d):
     letters = getLetters(guessedWord, index)
+    mask = getMaskForWord(guessedWord, index, '2')
     filteredDict = {}
+
     for (key, values) in d.items():
         if 0 not in [chars in key for chars in letters]:
-            filteredDict[key] = values
+            if not all((c1 == "_") or (c1 == c2) for c1, c2 in zip(mask, key)):
+                filteredDict[key] = values
+
     return filteredDict
 
 def containsNone(guessedWord, index, d):
@@ -53,11 +69,19 @@ def containsNone(guessedWord, index, d):
     filteredDict = {}
     for (key, values) in d.items():
         if 1 not in [chars in key for chars in letters]:
-            filteredDict[key] = values
+            filteredDict[key] = values 
     return filteredDict
 
-def narrowWords(guessedWord, index, dict):
-    filteredList = containsLettersAndPosition(guessedWord, index, containsLetters(guessedWord, index, containsNone(guessedWord, index, dict)))
+def narrowWords(guessedWord, index, d):
+    filteredList = d
+
+    if (index.__contains__('0')):
+        filteredList = containsNone(guessedWord, index, filteredList)
+    if (index.__contains__('1')):
+        filteredList = containsLettersAndPosition(guessedWord, index, filteredList)
+    if (index.__contains__('2')):
+        filteredList = containsLetters(guessedWord, index, filteredList)
+    
     return filteredList
 
 def getEntropy(word, mainList, listOfPermutes):
@@ -69,7 +93,7 @@ def getEntropy(word, mainList, listOfPermutes):
 
 
 class wordle_algo:
-
+    
     words = {}
     permute = None
     current_dict = None
