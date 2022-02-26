@@ -1,19 +1,21 @@
 from telegram.ext import *
+#from telegram import *      #for inlinekeyboard
 import teleKey as key
 import responseTest as R
 
 print("Commence Bot Operations...")
 
 def start_cmd(update, context):
-    update.message.reply_text('I see you are stuck in Wordle, what was your first word, Cheater?')
+    update.message.reply_text('Hello, did you need help with Wordle?')
+    #add Inline keyboard for Yes and Exit button
 
 def help_cmd(update, context):
     update.message.reply_text('Ask google for help, we only had 24 hours for this')
 
 def handle_msg(update, context):
     text = str(update.message.text).lower()
-    response = R.sample_responses(text)
 
+    response = R.sample_responses(text)
     update.message.reply_text(response)
 
 def error(update, context):
