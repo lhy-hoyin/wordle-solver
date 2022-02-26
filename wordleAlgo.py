@@ -72,6 +72,7 @@ class wordle_algo:
 
     words = {}
     permute = None
+    current_dict = None
 
     def __init__(self):
         # All possible outcomes
@@ -83,21 +84,33 @@ class wordle_algo:
             wordsRead = file.readlines()
             for word in wordsRead:
                 self.words[word.strip()] = 0.00
+        
+        # Start first time
+        self.restart()
     
-    def start(self):
-        currentDict = self.words
+    def get_possible_words(self, word_result):
+        assert len(word_result) == 1
+        for (word, result) in word_result.items():
+            return narrowWords(word, result, self.current_dict)
+        return self.current_dict
+    
+    def restart(self):
+        self.current_dict = self.words
+        return self
+        
+    def test(self):
         iterate = 0
         while (iterate <= 4): 
             word = input("please input a word: ")
             num = input("please input the order, 0 for black, 1 for green, 2 for orange : ")
-            currentDict = narrowWords(word, num, currentDict)
+            self.current_dict = self.get_possible_words({word:num})
             if iterate >= 1:
-                for (key, value) in currentDict.items():
-                    currentDict[key] = getEntropy(key, currentDict, self.permute)
-                currentDict = collections.OrderedDict(sorted(currentDict.items(), key=operator.itemgetter(1), reverse=True))
-            print(currentDict)
+                for (key, value) in self.current_dict.items():
+                    self.current_dict[key] = getEntropy(key, self.current_dict, self.permute)
+                self.current_dict = collections.OrderedDict(sorted(self.current_dict.items(), key=operator.itemgetter(1), reverse=True))
+            print(self.current_dict)
             iterate += 1
 
 
 if __name__ == "__main__":
-    wordle_algo().start()
+    wordle_algo().test()
