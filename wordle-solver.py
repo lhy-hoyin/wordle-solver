@@ -41,10 +41,9 @@ class wordle_solver:
                 print("InputError:", arg, "is not", WORDLE_WORD_LENGTH, "letters")
                 print("Please check your inputs")
                 return
-        self.add_to_dict()
-        print(self.get_attempts())
+        self.auto_add_to_dict()
     
-    def add_to_dict(self):
+    def auto_add_to_dict(self):
         i = 0
         num_of_pairs = (len(sys.argv) - 1) // 2
         while i < num_of_pairs:
@@ -53,12 +52,18 @@ class wordle_solver:
             self.attempts[key] = value
             i  = i + 1
     
+    # MUST ensure that key is all lower letters
     def add_to_dict(self, key_value):
-        # TODO: do checking of value before a updating to dict
+        for k in key_value.keys():
+            assert len(k) == WORDLE_WORD_LENGTH
+            assert k == k.lower()
+        for v in key_value.values():
+            assert len(v) == WORDLE_WORD_LENGTH
         self.attempts.update(key_value)
     
     def get_attempts(self):
         return self.attempts
         
 if __name__ == "__main__":
-    wordle_solver()
+    solver = wordle_solver()
+    print(solver.get_attempts())
