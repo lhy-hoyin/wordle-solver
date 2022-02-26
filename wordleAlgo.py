@@ -40,7 +40,6 @@ def getLettersNotInAnswer(guessedWord, index):
         if inAnswer.__contains__(letter):
             notInAnswer = notInAnswer.replace(letter, "")
 
-    print(notInAnswer)
     return notInAnswer
 
 def containsLettersAndPosition(guessedWord, index, d):
@@ -139,9 +138,10 @@ class wordle_algo:
             word = input("please input a word: ")
             num = input("please input the order, 0 for black, 1 for green, 2 for orange : ")
             self.current_dict = self.get_possible_words({word:num})
+            # note: we only calc entropy after 1st iteration, 
+            # cos it takes for the first one (too many words)
             if iterate >= 1:
-                self.compute_entropy()
-            print(self.current_dict)
+                self.compute_entropy() 
             iterate += 1
 
 
