@@ -3,11 +3,13 @@ from telegram.ext import *
 
 from bot_logic import bot_logic
 
+START_PHOTO_PATH = './img/wordle-solver-light.jpg'
+
 user_bot = {}
 
 def start_cmd(update, context):
     user_bot[str(update.effective_chat.id)] = bot_logic()
-    update.message.reply_photo('https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_thumbnail_photos/001/850/940/datas/medium.png',
+    update.message.reply_photo(photo=open(START_PHOTO_PATH, 'rb'),
                                caption='Hi there ^u^, did you need help with Wordle?\nType the first word to get started!')
     update.message.reply_text("Feeling lost? See what to do at /help")
     # TODO: add inline keyboard for Yes and Exit button
