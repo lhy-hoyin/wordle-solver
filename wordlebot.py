@@ -57,7 +57,7 @@ def main():
     
 def start(updater):
     updater.start_polling()
-    print("Commence Bot Operations...")
+    print("Bot start polling ...")
     
     updater.idle()
 
