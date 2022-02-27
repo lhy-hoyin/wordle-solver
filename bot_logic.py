@@ -58,9 +58,14 @@ class bot_logic:
         return self.suggest_words()
     
     def suggest_words(self, num = DEFAULT_SUGGEST_N_WORDS):
+        length = len(self.possible_words.items())
+        
+        if length <= 0:
+            return "Sorry, I can't think of anything :'("
+        
         # Retrieve suggestions from dict
-        suggestions = list(self.possible_words.items())[:num]
-                
+        suggestions = list(self.possible_words.items())[:(num if num > length else length)]
+        
         reply = "I suggest trying " + suggestions[0][0] + "\n"
         reply += "You can also try:"
         
