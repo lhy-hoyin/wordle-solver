@@ -7,9 +7,11 @@ It a [telegram bot](https://t.me/WdSolver_bot) that can help you solve Wordle, b
 
 
 ### Dependencies
-[SciPy](https://pypi.org/project/scipy/) `pip install scipy`\
-[python-telegram-bot](https://pypi.org/project/python-telegram-bot/) `pip install python-telegram-bot` \
-[wordfreq](https://pypi.org/project/wordfreq/) `pip install wordfreq`
+|Library|Installation|
+|---|---|
+| [SciPy](https://pypi.org/project/scipy/) | `pip install scipy` |
+| [wordfreq](https://pypi.org/project/wordfreq/) | `pip install wordfreq` |
+| [python-telegram-bot](https://pypi.org/project/python-telegram-bot/) | `pip install python-telegram-bot` |
 
 
 ### References
