@@ -1,7 +1,7 @@
 # Wordle Solver
 This is our project for iNTUition v8.0 (2022)
 
-Our telegram bot can be found [here](t.me/WdSolver_bot). \
+Our telegram bot can be found [here](https://t.me/WdSolver_bot). \
 (Sorry if our bot isn't running 24/7)
 
 
