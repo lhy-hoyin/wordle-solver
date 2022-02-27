@@ -1,5 +1,5 @@
 # Wordle Solver
-This is our project for iNTUition v8.0 (2022)
+This is our project for [iNTUition v8.0](https://intuition-v8.devpost.com/) (2022)
 <details>
   <summary><strong>More project releated info</strong></summary>
   
