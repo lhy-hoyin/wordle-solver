@@ -20,8 +20,7 @@ def status_help_message():
 class wordle_solver:
 
     attempts = {}
-    algo = wordle_algo()
-
+    
     def __init__(self):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.RawTextHelpFormatter,
@@ -31,6 +30,7 @@ class wordle_solver:
         parser.add_argument("result",
             help = status_help_message())
             
+        self.algo = wordle_algo()
         self.start_auto()
     
     def start_auto(self):

@@ -28,9 +28,10 @@ class bot_logic:
         if self.flag_enter_word:
             if not input_text.isalpha():
                 return "This doesn't look like a word :("
+                
             self.entered_word = input_text
             self.toggle_status()
-            return "Now enter the word status returned by Wordle"
+            return "What did Wordle say about the word?"
         
         elif self.flag_enter_result:
             if not input_text.isdecimal():
@@ -59,12 +60,13 @@ class bot_logic:
     
     def suggest_words(self, num = DEFAULT_SUGGEST_N_WORDS):
         length = len(self.possible_words.items())
+        limit = (num if num < length else length)
         
         if length <= 0:
             return "Sorry, I can't think of anything :'("
         
         # Retrieve suggestions from dict
-        suggestions = list(self.possible_words.items())[:(num if num > length else length)]
+        suggestions = list(self.possible_words.items())[:limit]
         
         reply = "I suggest trying " + suggestions[0][0] + "\n"
         reply += "You can also try:"
@@ -75,12 +77,6 @@ class bot_logic:
         
         #TODO: can also display numbers to users (to make a better choice)
         return reply
-    
-    def restart(self):
-        self.solver = wordle_solver()
-        self.entered_word = ""
-        self.entered_result = ""
-        self.possible_words = {}
     
     def result_format_message_str(self):
         return status_help_message()
