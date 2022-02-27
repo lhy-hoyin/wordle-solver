@@ -5,7 +5,6 @@ from telegram.ext import *
 
 from bot_logic import bot_logic
 
-BOT_TOKEN = ""
 START_PHOTO_PATH = './img/wordle-solver-light.jpg'
 PORT = int(os.environ.get('PORT', 5000))
 
@@ -49,7 +48,10 @@ def error(update, context):
     update.message.reply_text('Oh no...something bad happened. bot_brain.exe not working')
     update.message.reply_text('Why not try /start again?')
 
-def main():        
+def main():
+    # Retrieve telegram bot token from environment 
+    BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+        
     updater = Updater(BOT_TOKEN, use_context=True)
     dpc = updater.dispatcher
 
