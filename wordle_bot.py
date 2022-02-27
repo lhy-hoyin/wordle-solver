@@ -51,15 +51,9 @@ def error(update, context):
     update.message.reply_text('Why not try /start again?')
 
 def main():
-<<<<<<< HEAD:wordlebot.py
     # Retrieve telegram bot token from environment 
     BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
         
-=======
-    # Retrieve telegram bot token from environment
-    BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')  #fixme
-    
->>>>>>> main:wordle_bot.py
     updater = Updater(BOT_TOKEN, use_context=True)
     dpc = updater.dispatcher
 
