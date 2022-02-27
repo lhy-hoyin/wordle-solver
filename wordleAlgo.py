@@ -2,6 +2,14 @@ from scipy.stats import entropy
 import collections
 import wordfreq
 
+# Acknowledgements: 
+#   - 3Blue1Brown
+#       - Solving Wordle using information theory (https://www.youtube.com/watch?v=v68zYyaEmEA&t=720s)
+#       - GitHub page: (https://github.com/3b1b/videos/tree/master/_2022/wordle)
+#       - List of possible words (https://github.com/3b1b/videos/blob/master/_2022/wordle/data/allowed_words.txt)
+#   - Website to find all possible combinations a word can be in Wordle
+#       - https://www.dcode.fr/permutations-with-repetitions
+
 def getMaskForWord(guessedWord, index, n):
     mask = ""
     count = 0;
