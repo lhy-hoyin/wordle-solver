@@ -1,7 +1,5 @@
 from scipy.stats import entropy
-from scipy.special import expit
 import collections
-import operator
 import wordfreq
 
 def getMaskForWord(guessedWord, index, n):
@@ -108,7 +106,13 @@ class wordle_algo:
             wordsRead = file.readlines()
             for word in wordsRead:
                 freq = wordfreq.zipf_frequency(word.strip(), 'en', 'large')
-                self.words[word.strip()] = [0.00, freq]
+                self.words[word.strip()] = [0.00, freq, freq]
+        
+        # Sort the words by entropy + word frequency      
+        self.words = collections.OrderedDict(
+                sorted(self.words.items(), 
+                key=lambda item: item[1][2],
+                reverse=True))
         
         # Start first time
         self.restart()
@@ -123,12 +127,12 @@ class wordle_algo:
         # calculate entropy for each possible word
         for (key, value) in self.current_dict.items():
             en = getEntropy(key, self.current_dict, self.permute)
-            self.current_dict[key] = [en, value[1]]
+            self.current_dict[key] = [en, value[1], en + value[1]]
         
-        # Sort the words by entropy        
+        #Sort the words by entropy + word frequency 
         self.current_dict = collections.OrderedDict(
                 sorted(self.current_dict.items(), 
-                key=lambda item: item[1][0],
+                key=lambda item: item[1][2],
                 reverse=True))
     
     def restart(self):
@@ -145,7 +149,6 @@ class wordle_algo:
             # cos it takes for the first one (too many words)
             if iterate >= 1:
                 self.compute_entropy() # note: we only calc entropy after 1st iteration, cos it takes for the first one (too many words)
-            
             iterate += 1
 
 if __name__ == "__main__":
