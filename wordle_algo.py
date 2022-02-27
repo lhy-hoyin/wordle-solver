@@ -1,5 +1,6 @@
-from scipy.stats import entropy
 import collections
+
+from scipy.stats import entropy
 import wordfreq
 
 # Acknowledgements: 
@@ -10,92 +11,92 @@ import wordfreq
 #   - Website to find all possible combinations a word can be in Wordle
 #       - https://www.dcode.fr/permutations-with-repetitions
 
-def getMaskForWord(guessedWord, index, n):
+def get_mask_for_word(guessed_word, index, n):
     mask = ""
     count = 0;
     for num in index:
         if num == n:
-            mask = mask + guessedWord[count]
+            mask = mask + guessed_word[count]
         else:
             mask = mask + "_"
         count += 1
     return mask
 
-def getLetters(guessedWord, index):
+def get_letters(guessed_word, index):
     letters = ""
     count = 0;
     for num in index:
         if num == '2':
-            letters = letters + guessedWord[count]
+            letters = letters + guessed_word[count]
         count += 1
     return letters
 
-def getLettersNotInAnswer(guessedWord, index):
-    notInAnswer = ""
-    inAnswer = ""
+def get_letters_not_in_answer(guessed_word, index):
+    not_in_answer = ""
+    in_answer = ""
     count = 0;
     for num in index:
         if num == '0':
-            if count < len(guessedWord):
-                if inAnswer.__contains__(guessedWord[count]) == False:
-                    notInAnswer = notInAnswer + guessedWord[count]
+            if count < len(guessed_word):
+                if in_answer.__contains__(guessed_word[count]) == False:
+                    not_in_answer = not_in_answer + guessed_word[count]
         else:
-            if count < len(guessedWord):
-                inAnswer = inAnswer + guessedWord[count]
+            if count < len(guessed_word):
+                in_answer = in_answer + guessed_word[count]
         count += 1
     
-    for letter in notInAnswer:
-        if inAnswer.__contains__(letter):
-            notInAnswer = notInAnswer.replace(letter, "")
+    for letter in not_in_answer:
+        if in_answer.__contains__(letter):
+            not_in_answer = not_in_answer.replace(letter, "")
 
-    return notInAnswer
+    return not_in_answer
 
-def containsLettersAndPosition(guessedWord, index, d):
-    mask = getMaskForWord(guessedWord, index, '1')
-    filteredList = {}
+def contains_letters_and_position(guessed_word, index, d):
+    mask = get_mask_for_word(guessed_word, index, '1')
+    filtered_list = {}
 
     for (key, values) in d.items():
        if all((c1 == "_") or (c1 == c2) for c1, c2 in zip(mask, key)):
-            filteredList[key] = values
-    return filteredList
+            filtered_list[key] = values
+    return filtered_list
 
-def containsLetters(guessedWord, index, d):
-    letters = getLetters(guessedWord, index)
-    mask = getMaskForWord(guessedWord, index, '2')
-    filteredDict = {}
+def contains_letters(guessed_word, index, d):
+    letters = get_letters(guessed_word, index)
+    mask = get_mask_for_word(guessed_word, index, '2')
+    filtered_dict = {}
 
     for (key, values) in d.items():
         if 0 not in [chars in key for chars in letters]:
             if not all((c1 == "_") or (c1 == c2) for c1, c2 in zip(mask, key)):
-                filteredDict[key] = values
+                filtered_dict[key] = values
 
-    return filteredDict
+    return filtered_dict
 
-def containsNone(guessedWord, index, d):
-    letters = getLettersNotInAnswer(guessedWord, index)
-    filteredDict = {}
+def containsNone(guessed_word, index, d):
+    letters = get_letters_not_in_answer(guessed_word, index)
+    filtered_dict = {}
     for (key, values) in d.items():
         if 1 not in [chars in key for chars in letters]:
-            filteredDict[key] = values 
-    return filteredDict
+            filtered_dict[key] = values 
+    return filtered_dict
 
-def narrowWords(guessedWord, index, d):
-    filteredList = d
+def narrow_words(guessed_word, index, d):
+    filtered_list = d
 
     if (index.__contains__('0')):
-        filteredList = containsNone(guessedWord, index, filteredList)
+        filtered_list = containsNone(guessed_word, index, filtered_list)
     if (index.__contains__('1')):
-        filteredList = containsLettersAndPosition(guessedWord, index, filteredList)
+        filtered_list = contains_letters_and_position(guessed_word, index, filtered_list)
     if (index.__contains__('2')):
-        filteredList = containsLetters(guessedWord, index, filteredList)
+        filtered_list = contains_letters(guessed_word, index, filtered_list)
     
-    return filteredList
+    return filtered_list
 
-def getEntropy(word, mainList, listOfPermutes):
+def getEntropy(word, main_list, list_of_permutes):
     arr = []
-    for p in listOfPermutes:
-        fList = narrowWords(word, p, mainList)
-        arr.append(len(fList) / len(mainList))
+    for p in list_of_permutes:
+        fList = narrow_words(word, p, main_list)
+        arr.append(len(fList) / len(main_list))
     return entropy(arr, base=2)    
     
 class wordle_algo:
@@ -128,7 +129,7 @@ class wordle_algo:
     def get_possible_words(self, word_result):
         assert len(word_result) == 1
         for (word, result) in word_result.items():
-            return narrowWords(word, result, self.current_dict)
+            return narrow_words(word, result, self.current_dict)
         return self.current_dict
     
     def compute_entropy(self):
