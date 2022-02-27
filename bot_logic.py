@@ -68,7 +68,7 @@ class bot_logic:
         # Retrieve suggestions from dict
         suggestions = list(self.possible_words.items())[:limit]
         
-        reply = "I suggest trying " + suggestions[0][0] + "\n"
+        reply = "I suggest trying " + suggestions[0][0] + "\n\n"
         reply += "You can also try:"
         
         for word_pair in suggestions:
