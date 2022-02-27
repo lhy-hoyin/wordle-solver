@@ -158,6 +158,7 @@ class wordle_algo:
             if iterate >= 1:
                 self.compute_entropy() # note: we only calc entropy after 1st iteration, cos it takes for the first one (too many words)
             iterate += 1
+            print(self.current_dict)
 
 if __name__ == "__main__":
     wordle_algo().test()
