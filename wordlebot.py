@@ -1,9 +1,12 @@
+import os
+
 from telegram.ext import *
 #from telegram import *      #for inlinekeyboard
 
 from bot_logic import bot_logic
 
 START_PHOTO_PATH = './img/wordle-solver-light.jpg'
+PORT = int(os.environ.get('PORT', 5000))
 
 user_bot = {}
 
@@ -42,6 +45,9 @@ def main():
     with open("token.key", 'r') as token:
         BOT_TOKEN = token.read()
     
+    with open("heroku_app.key", 'r') as token:
+        HEROKU_APP = token.read()
+        
     updater = Updater(BOT_TOKEN, use_context=True)
     dpc = updater.dispatcher
 
@@ -59,8 +65,15 @@ def main():
     start(updater)
     
 def start(updater):
-    updater.start_polling()
-    print("Bot start polling ...")
+    #updater.start_polling()
+    #print("Bot start polling ...")
+
+    updater.start_webhook(
+        listen="0.0.0.0",
+        port=int(PORT),
+        url_path = BOT_TOKEN,
+        webhook_url = 'https://' + HEROKU_APP + '.herokuapp.com/' + BOT_TOKEN)
+    print("Bot webhook started ...")
 
     # wait for bot to stop
     updater.idle()
