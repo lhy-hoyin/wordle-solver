@@ -9,8 +9,9 @@ user_bot = {}
 
 def start_cmd(update, context):
     user_bot[str(update.effective_chat.id)] = bot_logic()
-    update.message.reply_photo(photo=open(START_PHOTO_PATH, 'rb'),
-                               caption='Hi there ^u^, did you need help with Wordle?\nType the first word to get started!')
+    update.message.reply_photo(
+        photo=open(START_PHOTO_PATH, 'rb'),
+        caption='Hi there ^u^, did you need help with Wordle?\nType the first word to get started!')
     update.message.reply_text("Feeling lost? See what to do at /help")
     # TODO: add inline keyboard for Yes and Exit button
 
@@ -30,8 +31,7 @@ def result_format_cmd(update, context):
     update.message.reply_text(user_bot[str(update.effective_chat.id)].result_format_message_str())
 
 def handle_msg(update, context):
-    response = user_bot[str(update.effective_chat.id)].respond(update.message.text)
-    update.message.reply_text(response)
+    update.message.reply_text(user_bot[str(update.effective_chat.id)].respond(update.message.text))
 
 def error(update, context):
     print(f"Error: {context.error}\n {update}")
@@ -45,12 +45,15 @@ def main():
     updater = Updater(BOT_TOKEN, use_context=True)
     dpc = updater.dispatcher
 
+    # CommandHandler
     dpc.add_handler(CommandHandler("start", start_cmd))
     dpc.add_handler(CommandHandler("help", help_cmd))
     dpc.add_handler(CommandHandler("format", result_format_cmd))
-    
+
+    # MessageHandler
     dpc.add_handler(MessageHandler(Filters.text, handle_msg))
-    
+
+    # Error Handler
     dpc.add_error_handler(error)
     
     start(updater)
@@ -58,9 +61,13 @@ def main():
 def start(updater):
     updater.start_polling()
     print("Bot start polling ...")
-    
-    updater.idle()
 
+    # wait for bot to stop
+    updater.idle()
+    on_stopping()
+
+def on_stopping():
+    print("Bot is stopping ...")
 
 if __name__ == "__main__":
     main()
