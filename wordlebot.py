@@ -86,5 +86,4 @@ def on_stopping():
     print("Bot is stopping ...")
 
 if __name__ == "__main__":
-    print("triggered")
     main()
