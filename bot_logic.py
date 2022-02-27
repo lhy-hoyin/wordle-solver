@@ -31,7 +31,7 @@ class bot_logic:
                 
             self.entered_word = input_text
             self.toggle_status()
-            return "What did Wordle say about the word?\nEnter in this format:\n• 0: Wrong letter choice\n• 1: Correct letter position\n• 2: Wrong letter position\nExample: 10200"
+            return "What did Wordle say about the word?"
         
         elif self.flag_enter_result:
             if not input_text.isdecimal():

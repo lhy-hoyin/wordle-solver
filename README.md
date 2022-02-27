@@ -2,8 +2,8 @@
 This is our project for iNTUition v8.0 (2022)
 
 Our telegram bot can be found [here](https://t.me/WdSolver_bot). \
-(Sorry if our bot isn't running 24/7)
-
+(Sorry if our bot isn't running 24/7)\
+The API Key has been omitted, please use your own bot API key to run the code.
 
 ### Dependencies
 [SciPy](https://pypi.org/project/scipy/) `pip install scipy`\

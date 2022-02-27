@@ -15,9 +15,14 @@ def start_cmd(update, context):
 def help_cmd(update, context):
     update.message.reply_text(
         "First time asking for help? No worries :) We are here to help!\n"
-        "Start off with typing a word, then provided me with the result of the word. "
+        "Start off with typing a word, then provided me with the result of the word like this:\n"
+        "• 0: Wrong letter choice\n"
+        "• 1: Correct letter position\n"
+        "• 2: Wrong letter position\n"
+        "Example: 10200\n"
         "Please provide the result in the correct /format\n"
-        "I will then try to suggest some words to try. Feel free to try other words too."
+        "I'll suggest some words to try then :) Feel free to try other words too."
+
     )
 
 def result_format_cmd(update, context):
