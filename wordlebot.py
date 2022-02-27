@@ -22,7 +22,6 @@ def help_cmd(update, context):
         "Example: 10200\n"
         "Please provide the result in the correct /format\n"
         "I'll suggest some words to try then :) Feel free to try other words too."
-
     )
 
 def result_format_cmd(update, context):
@@ -33,7 +32,7 @@ def handle_msg(update, context):
     update.message.reply_text(response)
 
 def error(update, context):
-    print(f"Update {update} caused error {context.error}")
+    print(f"Error: {context.error}\n {update}")
     update.message.reply_text('Oh no...something bad happened. bot_brain.exe not working')
     update.message.reply_text('Why not try /start again?')
 
@@ -52,6 +51,9 @@ def main():
     
     dpc.add_error_handler(error)
     
+    start(updater)
+    
+def start(updater):
     updater.start_polling()
     print("Commence Bot Operations...")
     
