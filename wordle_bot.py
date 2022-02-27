@@ -43,7 +43,7 @@ def error(update, context):
 
 def main():
     # Retrieve telegram bot token from environment
-    BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+    BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')  #fixme
     
     updater = Updater(BOT_TOKEN, use_context=True)
     dpc = updater.dispatcher
