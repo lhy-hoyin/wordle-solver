@@ -1,3 +1,4 @@
+import logging
 import os
 
 from telegram.ext import *
@@ -9,6 +10,7 @@ START_PHOTO_PATH = './img/wordle-solver-light.jpg'
 PORT = int(os.environ.get('PORT', 5000))
 
 user_bot = {}
+BOT_TOKEN = ""
 
 # Enables logging
 logging.basicConfig(
@@ -71,7 +73,7 @@ def main():
 def start(updater):
     updater.start_webhook(
         listen="0.0.0.0",
-        port=int(PORT),
+        port=PORT,
         url_path = BOT_TOKEN,
         webhook_url = 'https://wordle-bot-2k22.herokuapp.com/' + BOT_TOKEN)
     print("Bot webhook started ...")
@@ -84,4 +86,5 @@ def on_stopping():
     print("Bot is stopping ...")
 
 if __name__ == "__main__":
+    print("triggered")
     main()
