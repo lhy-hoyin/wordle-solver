@@ -1,6 +1,14 @@
 from scipy.stats import entropy
 import collections
-import operator
+import wordfreq
+
+# Acknowledgements: 
+#   - 3Blue1Brown
+#       - Solving Wordle using information theory (https://www.youtube.com/watch?v=v68zYyaEmEA&t=720s)
+#       - GitHub page: (https://github.com/3b1b/videos/tree/master/_2022/wordle)
+#       - List of possible words (https://github.com/3b1b/videos/blob/master/_2022/wordle/data/allowed_words.txt)
+#   - Website to find all possible combinations a word can be in Wordle
+#       - https://www.dcode.fr/permutations-with-repetitions
 
 def getMaskForWord(guessedWord, index, n):
     mask = ""
@@ -88,9 +96,8 @@ def getEntropy(word, mainList, listOfPermutes):
     for p in listOfPermutes:
         fList = narrowWords(word, p, mainList)
         arr.append(len(fList) / len(mainList))
-    return entropy(arr, base=2)
-
-
+    return entropy(arr, base=2)    
+    
 class wordle_algo:
     
     words = {}
@@ -106,7 +113,14 @@ class wordle_algo:
         with open('words.txt', "r") as file:
             wordsRead = file.readlines()
             for word in wordsRead:
-                self.words[word.strip()] = 0.00
+                freq = wordfreq.zipf_frequency(word.strip(), 'en', 'large')
+                self.words[word.strip()] = [0.00, freq, freq]
+        
+        # Sort the words by entropy + word frequency      
+        self.words = collections.OrderedDict(
+                sorted(self.words.items(), 
+                key=lambda item: item[1][2],
+                reverse=True))
         
         # Start first time
         self.restart()
@@ -120,12 +134,13 @@ class wordle_algo:
     def compute_entropy(self):
         # calculate entropy for each possible word
         for (key, value) in self.current_dict.items():
-            self.current_dict[key] = getEntropy(key, self.current_dict, self.permute)
+            en = getEntropy(key, self.current_dict, self.permute)
+            self.current_dict[key] = [en, value[1], en + value[1]]
         
-        # Sort the words by entropy        
+        #Sort the words by entropy + word frequency 
         self.current_dict = collections.OrderedDict(
                 sorted(self.current_dict.items(), 
-                key=operator.itemgetter(1),
+                key=lambda item: item[1][2],
                 reverse=True))
     
     def restart(self):
@@ -143,6 +158,7 @@ class wordle_algo:
             if iterate >= 1:
                 self.compute_entropy() # note: we only calc entropy after 1st iteration, cos it takes for the first one (too many words)
             iterate += 1
+            print(self.current_dict)
 
 if __name__ == "__main__":
     wordle_algo().test()
