@@ -1,1 +1,1 @@
-web: python3 wordlebot.py
+web: python3 wordle_bot.py
