@@ -1,5 +1,6 @@
 import os
 
+from dotenv import load_dotenv
 from telegram.ext import *
 #from telegram import *      #for inlinekeyboard
 
@@ -42,8 +43,8 @@ def error(update, context):
     update.message.reply_text('Why not try /start again?')
 
 def main():
-    # Retrieve telegram bot token from environment
-    BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')  #fixme
+    # Retrieve telegram bot token
+    BOT_TOKEN = get_telegram_bot_token()
     
     updater = Updater(BOT_TOKEN, use_context=True)
     dpc = updater.dispatcher
@@ -59,7 +60,12 @@ def main():
     # Error Handler
     dpc.add_error_handler(error)
     
+    # start bot
     start(updater)
+    
+    # wait for bot to stop
+    updater.idle()
+    on_stopping()
     
 def start(updater):
     updater.start_polling()
@@ -72,12 +78,12 @@ def start(updater):
     #    webhook_url = 'https://' + HEROKU_APP + '.herokuapp.com/' + BOT_TOKEN)
     #print("Bot webhook started ...")
 
-    # wait for bot to stop
-    updater.idle()
-    on_stopping()
-
 def on_stopping():
     print("Bot is stopping ...")
+
+def get_telegram_bot_token():
+    load_dotenv()
+    return os.getenv('TELEGRAM_BOT_TOKEN')
 
 if __name__ == "__main__":
     main()
