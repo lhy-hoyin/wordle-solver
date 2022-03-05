@@ -1,6 +1,7 @@
 import logging
 import os
 
+from dotenv import load_dotenv
 from telegram.ext import *
 #from telegram import *      #for inlinekeyboard
 
@@ -42,6 +43,9 @@ def help_cmd(update, context):
 def result_format_cmd(update, context):
     update.message.reply_text(user_bot[str(update.effective_chat.id)].result_format_message_str())
 
+def thanks_cmd(update, context):
+    update.message.reply_text("On behalf of the programmers, you're welcome! :D")
+
 def handle_msg(update, context):
     update.message.reply_text(user_bot[str(update.effective_chat.id)].respond(update.message.text))
 
@@ -51,9 +55,9 @@ def error(update, context):
     update.message.reply_text('Why not try /start again?')
 
 def main():
-    # Retrieve telegram bot token from environment 
-    BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-        
+    # Retrieve telegram bot token
+    BOT_TOKEN = get_telegram_bot_token()
+    
     updater = Updater(BOT_TOKEN, use_context=True)
     dpc = updater.dispatcher
 
@@ -61,6 +65,7 @@ def main():
     dpc.add_handler(CommandHandler("start", start_cmd))
     dpc.add_handler(CommandHandler("help", help_cmd))
     dpc.add_handler(CommandHandler("format", result_format_cmd))
+    dpc.add_handler(CommandHandler("thanks", thanks_cmd))
 
     # MessageHandler
     dpc.add_handler(MessageHandler(Filters.text, handle_msg))
@@ -68,7 +73,9 @@ def main():
     # Error Handler
     dpc.add_error_handler(error)
     
-    start(updater)
+    start(updater) # start bot
+    updater.idle() # wait for bot to stop
+    on_stopping() # run code when bot is stopping
     
 def start(updater):
     updater.start_webhook(
@@ -78,13 +85,12 @@ def start(updater):
         webhook_url = 'https://wordle-bot-2k22.herokuapp.com/' + BOT_TOKEN)
     print("Bot webhook started ...")
 
-
-    # wait for bot to stop
-    updater.idle()
-    on_stopping()
-
 def on_stopping():
     print("Bot is stopping ...")
+
+def get_telegram_bot_token():
+    load_dotenv()
+    return os.getenv('TELEGRAM_BOT_TOKEN')
 
 if __name__ == "__main__":
     main()
