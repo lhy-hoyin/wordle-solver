@@ -16,7 +16,6 @@ It's a [telegram bot](https://t.me/WdSolver_bot) that can help you solve Wordle,
 |---|---|
 | [SciPy](https://pypi.org/project/scipy/) | `pip install scipy` |
 | [wordfreq](https://pypi.org/project/wordfreq/) | `pip install wordfreq` |
-| [python-dotenv](https://pypi.org/project/python-dotenv/) | `pip install python-dotenv` |
 | [python-telegram-bot](https://pypi.org/project/python-telegram-bot/) | `pip install python-telegram-bot` |
 
 

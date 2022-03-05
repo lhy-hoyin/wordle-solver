@@ -1,7 +1,6 @@
 import logging
 import os
 
-from dotenv import load_dotenv
 from telegram.ext import *
 #from telegram import *      #for inlinekeyboard
 
@@ -89,7 +88,6 @@ def on_stopping():
     print("Bot is stopping ...")
 
 def get_telegram_bot_token():
-    load_dotenv()
     return os.getenv('TELEGRAM_BOT_TOKEN')
 
 if __name__ == "__main__":
