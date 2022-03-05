@@ -34,6 +34,9 @@ def help_cmd(update, context):
 def result_format_cmd(update, context):
     update.message.reply_text(user_bot[str(update.effective_chat.id)].result_format_message_str())
 
+def thanks_cmd(update, context):
+    update.message.reply_text("On behalf of the programmers, you're welcome! :D")
+
 def handle_msg(update, context):
     update.message.reply_text(user_bot[str(update.effective_chat.id)].respond(update.message.text))
 
@@ -53,6 +56,7 @@ def main():
     dpc.add_handler(CommandHandler("start", start_cmd))
     dpc.add_handler(CommandHandler("help", help_cmd))
     dpc.add_handler(CommandHandler("format", result_format_cmd))
+    dpc.add_handler(CommandHandler("thanks", thanks_cmd))
 
     # MessageHandler
     dpc.add_handler(MessageHandler(Filters.text, handle_msg))

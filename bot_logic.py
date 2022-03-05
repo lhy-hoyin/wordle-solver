@@ -44,7 +44,7 @@ class bot_logic:
                 return "wrong digit(s)"
             '''
             if input_text == "11111":
-                return "Yay!!! You got the correct answer already!\n(Hint: type /start to try the next one)"
+                return "Yay!!! You got the correct answer already!\n(Say /thanks or /start on another word)"
             
             self.entered_result = input_text
             return self.run_solver()
