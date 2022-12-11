@@ -10,7 +10,7 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
         message="Hello World"
         
-        START_PHOTO_PATH = './img/wordle-solver-light.jpg'
+        START_PHOTO_PATH = '../img/wordle-solver-light.jpg'
         
         self.wfile.write(open(START_PHOTO_PATH))
         return
