@@ -1,14 +1,17 @@
 from http.server import BaseHTTPRequestHandler
 from urllib import parse
 
+
+
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        s = self.path
-        dic = dict(parse.parse_qsl(parse.urlsplit(s).query))
         self.send_response(200)
-        self.send_header('Content-type','text/plain')
+        self.send_header('Content-type','text/html')
         self.end_headers()
         message="Hello World"
-        self.wfile.write(message.encode())
+        
+        START_PHOTO_PATH = './img/wordle-solver-light.jpg'
+        
+        self.wfile.write(open(START_PHOTO_PATH))
         return
         
