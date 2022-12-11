@@ -10,7 +10,9 @@ class handler(BaseHTTPRequestHandler):
         self.wfile.write("hello world".encode())
 
         with open('test.jpg', 'rb') as f:
-            self.wfile.write(f.read(-1))
+            bytes=f.read(1)
+            while bytes:
+                self.wfile.write(bytes)
                 
         return
         
