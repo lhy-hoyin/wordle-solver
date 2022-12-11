@@ -6,7 +6,11 @@ class handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Content-type','text/html')
         self.end_headers()
-        message="Hello World"
-        self.wfile.write(open('test.jpg', 'rb').read())
+
+        with open('test.jpg', 'rb') as f:
+            byte = f.read(1)
+            while byte:
+                self.wfile.write(byte)
+                
         return
         
