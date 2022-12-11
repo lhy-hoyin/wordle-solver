@@ -7,6 +7,6 @@ class handler(BaseHTTPRequestHandler):
         self.send_header('Content-type','text/html')
         self.end_headers()
         message="Hello World"
-        self.wfile.write(open(join('img','wordle-solver-light.jpg')), 'rb')
+        self.wfile.write(open(join('img','wordle-solver-light.jpg'), 'rb'))
         return
         
