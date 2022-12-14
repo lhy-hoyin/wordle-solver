@@ -1,7 +1,7 @@
 import sys
 import argparse
 
-from wordle_algo import wordle_algo
+from solver.wordle_algo import wordle_algo
 
 WORDLE_WORD_LENGTH = 5
 

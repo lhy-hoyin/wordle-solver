@@ -107,11 +107,11 @@ class wordle_algo:
 
     def __init__(self):
         # All possible outcomes
-        with open('permutations.txt', "r") as file:
+        with open('solver\permutations.txt', "r") as file:
             self.permute = file.readlines()
         
         # Get words in text file
-        with open('words.txt', "r") as file:
+        with open('solver\words.txt', "r") as file:
             wordsRead = file.readlines()
             for word in wordsRead:
                 freq = wordfreq.zipf_frequency(word.strip(), 'en', 'large')

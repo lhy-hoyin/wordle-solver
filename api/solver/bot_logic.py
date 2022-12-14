@@ -1,4 +1,4 @@
-from wordle_solver import WORDLE_WORD_LENGTH, status_help_message, wordle_solver
+from solver.wordle_solver import WORDLE_WORD_LENGTH, status_help_message, wordle_solver
 
 class bot_logic:
 

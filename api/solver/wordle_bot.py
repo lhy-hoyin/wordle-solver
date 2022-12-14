@@ -1,10 +1,10 @@
 import os
 
-from dotenv import load_dotenv
+from dotenv import load_dotenv   # pip install python-dotenv
 from telegram.ext import *
 #from telegram import *      #for inlinekeyboard
 
-from bot_logic import bot_logic
+from solver.bot_logic import bot_logic
 
 START_PHOTO_PATH = './img/wordle-solver-light.jpg'
 PORT = int(os.environ.get('PORT', 5000))
