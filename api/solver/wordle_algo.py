@@ -98,8 +98,9 @@ def getEntropy(word, main_list, list_of_permutes):
         fList = narrow_words(word, p, main_list)
         arr.append(len(fList) / len(main_list))
     return entropy(arr, base=2)    
-    
-class wordle_algo:
+
+  
+class WordleAlgo:
     
     words = {}
     permute = None
@@ -162,4 +163,4 @@ class wordle_algo:
             print(self.current_dict)
 
 if __name__ == "__main__":
-    wordle_algo().test()
+    WordleAlgo().test()

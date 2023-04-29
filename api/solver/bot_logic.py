@@ -1,6 +1,6 @@
-from solver.wordle_solver import WORDLE_WORD_LENGTH, status_help_message, wordle_solver
+from .wordle_solver import WORDLE_WORD_LENGTH, status_help_message, WordleSolver
 
-class bot_logic:
+class BotLogic:
 
     DEFAULT_SUGGEST_N_WORDS = 10
 
@@ -10,7 +10,7 @@ class bot_logic:
     possible_words = {}
     
     def __init__(self):
-        self.solver = wordle_solver()
+        self.solver = WordleSolver()
     
     def respond(self, input_text):
         if input_text.lower() in ("hi", "hey", "yoyoyo"):
@@ -37,6 +37,7 @@ class bot_logic:
             if not input_text.isdecimal():
                 return "Hmm...I don't quite understand this format :(\nType /format for more info" 
                 # maybe use inline kb here(??)
+                
             #fixme: code supposed to check that no other digits are input
             # except for 0, 1, 2
             '''
@@ -86,6 +87,6 @@ class bot_logic:
         self.flag_enter_result = not self.flag_enter_result
 
 if __name__ == "__main__":
-    bot = bot_logic()
+    bot = BotLogic()
     while(True):
         print(bot.respond(input("> ")))

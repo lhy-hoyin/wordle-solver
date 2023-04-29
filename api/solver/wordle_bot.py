@@ -1,18 +1,22 @@
 import os
-
+import telegram.ext as tele
 from dotenv import load_dotenv   # pip install python-dotenv
-from telegram.ext import *
+
 #from telegram import *      #for inlinekeyboard
 
-from solver.bot_logic import bot_logic
+from .bot_logic import BotLogic
 
-START_PHOTO_PATH = './img/wordle-solver-light.jpg'
+START_PHOTO_PATH = '../img/wordle-solver-light.jpg'
 PORT = int(os.environ.get('PORT', 5000))
 
+load_dotenv()
 user_bot = {}
 
+def get_telegram_bot_token():
+    return os.getenv('TELEGRAM_BOT_TOKEN', 'MISSING_BOT_TOKEN')
+
 def start_cmd(update, context):
-    user_bot[str(update.effective_chat.id)] = bot_logic()
+    user_bot[str(update.effective_chat.id)] = BotLogic()
     update.message.reply_photo(
         photo=open(START_PHOTO_PATH, 'rb'),
         caption='Hi there ^u^, did you need help with Wordle?\nType the first word to get started!')
@@ -42,24 +46,27 @@ def handle_msg(update, context):
 
 def error(update, context):
     print(f"Error: {context.error}\n {update}")
-    update.message.reply_text('Oh no...something bad happened. bot_brain.exe not working')
+    update.message.reply_text('Oh no...something bad happened. bot-brain.exe not working')
     update.message.reply_text('Why not try /start again?')
 
+if __name__ == "__main__":
+    main()
+    
 def main():
     # Retrieve telegram bot token
     BOT_TOKEN = get_telegram_bot_token()
     
-    updater = Updater(BOT_TOKEN, use_context=True)
+    updater = tele.Updater(BOT_TOKEN, use_context=True)
     dpc = updater.dispatcher
 
     # CommandHandler
-    dpc.add_handler(CommandHandler("start", start_cmd))
-    dpc.add_handler(CommandHandler("help", help_cmd))
-    dpc.add_handler(CommandHandler("format", result_format_cmd))
-    dpc.add_handler(CommandHandler("thanks", thanks_cmd))
+    dpc.add_handler(tele.CommandHandler("start", start_cmd))
+    dpc.add_handler(tele.CommandHandler("help", help_cmd))
+    dpc.add_handler(tele.CommandHandler("format", result_format_cmd))
+    dpc.add_handler(tele.CommandHandler("thanks", thanks_cmd))
 
     # MessageHandler
-    dpc.add_handler(MessageHandler(Filters.text, handle_msg))
+    dpc.add_handler(tele.MessageHandler(tele.Filters.text, handle_msg))
 
     # Error Handler
     dpc.add_error_handler(error)
@@ -72,22 +79,23 @@ def main():
     on_stopping()
     
 def start(updater):
-    updater.start_polling()
-    print("Bot start polling ...")
+    BOT_TOKEN = get_telegram_bot_token()
+    env = os.getenv('RuntimeEnv', 'local')
 
-    #updater.start_webhook(
-    #    listen="0.0.0.0",
-    #    port=int(PORT),
-    #    url_path = BOT_TOKEN,
-    #    webhook_url = 'https://' + HEROKU_APP + '.herokuapp.com/' + BOT_TOKEN)
-    #print("Bot webhook started ...")
+    if env == 'local':
+        print("Bot started polling ...")
+        updater.start_polling()
+        
+    else:
+        updater.start_webhook(
+            listen="0.0.0.0",
+            port=int(PORT),
+            url_path = BOT_TOKEN,
+            webhook_url = os.getenv('WEBHOOK_HOST') + "/api")
+        print("Bot webhook started ...")
 
 def on_stopping():
     print("Bot is stopping ...")
 
-def get_telegram_bot_token():
-    load_dotenv()
-    return os.getenv('TELEGRAM_BOT_TOKEN')
-
-if __name__ == "__main__":
-    main()
+# https://api.telegram.org/bot{your_bot_token}/setWebhook?url={your_vercel_domain_url}/api/bot
+#WEBHOOK_URL = urljoin(WEBHOOK_HOST, "/api/bot")

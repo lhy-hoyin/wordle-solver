@@ -1,7 +1,7 @@
 import sys
 import argparse
 
-from solver.wordle_algo import wordle_algo
+from .wordle_algo import WordleAlgo
 
 WORDLE_WORD_LENGTH = 5
 
@@ -17,7 +17,8 @@ def status_help_message():
         help_message = help_message + "\n" + i + " to represent " + status[i]
     return help_message
 
-class wordle_solver:
+
+class WordleSolver:
 
     attempts = {}
     
@@ -74,7 +75,7 @@ class wordle_solver:
         return self.attempts
         
 if __name__ == "__main__":
-    solver = wordle_solver()
+    solver = WordleSolver()
     possible_words = solver.try_word({'magic':'02200'})
     possible_words = solver.try_word({'grape':'11100'})
     possible_words = solver.try_word({'grass':'11100'})
